@@ -109,7 +109,7 @@ public class User {
         }
 
         public UserDetails build(){
-            return new User(this);
+            return (UserDetails) new User(this);
         }
     }
 }
