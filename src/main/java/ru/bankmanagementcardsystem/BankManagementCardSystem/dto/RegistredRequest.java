@@ -1,20 +1,27 @@
 package ru.bankmanagementcardsystem.BankManagementCardSystem.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import ru.bankmanagementcardsystem.BankManagementCardSystem.model.Role;
 
-public class LoginRequest {
+import java.util.Set;
+
+public class RegistredRequest {
+
 
     @NotBlank
     private String username;
     @NotBlank
     private String password;
+    @NotBlank
+    private Set<Role> roleName;
 
-    public LoginRequest() {
+    public RegistredRequest() {
     }
 
-    public LoginRequest(String username, String password) {
+    public RegistredRequest(String username, String password, Set<Role> roleName) {
         this.username = username;
         this.password = password;
+        this.roleName = roleName;
     }
 
     public String getUsername() {
@@ -31,5 +38,13 @@ public class LoginRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Set<Role> getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(Set<Role> roleName) {
+        this.roleName = roleName;
     }
 }

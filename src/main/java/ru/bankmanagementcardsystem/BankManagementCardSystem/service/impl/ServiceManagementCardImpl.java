@@ -93,7 +93,7 @@ public class ServiceManagementCardImpl implements ServiceManagementCard {
     public void getDeleteCardToClient(String nameClient, String numberCard) {
         Card card = entityManager.find(Card.class, numberCard);
         User user = entityManager.find(User.class, nameClient);
-        user = User.builder(user)
+        user = (User) User.builder(user)
                 .cards(deleteCard(user.getCards(), card))
                 .build();
 

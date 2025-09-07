@@ -1,60 +1,57 @@
 package ru.bankmanagementcardsystem.BankManagementCardSystem.controller;
 
 
-//import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-//import ru.banksystemcard.management.model.Card;
-//import ru.banksystemcard.management.service.UserServiceManagementCard;
+import ru.bankmanagementcardsystem.BankManagementCardSystem.model.Card;
+import ru.bankmanagementcardsystem.BankManagementCardSystem.service.ServiceManagementCard;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
 
-//    private final UserServiceManagementCard serviceCard;
-//
-//    public UserController(UserServiceManagementCard serviceCard) {
-//        this.serviceCard = serviceCard;
-//    }
+    private final ServiceManagementCard service;
 
-    /**
-     * Test storage
-     * @param page
-     * @param size
-     * @param sortBy
-     * @param direction
-     * @return
-     */
+    public UserController(ServiceManagementCard service) {
+        this.service = service;
+    }
 
-    private final List<String> TEST = Stream.of(
-            new String("cardOne1"),
-            new String("cardTwo2"),
-            new String("cardThree3")
-    ).toList();
 
-//    @GetMapping("/page")
-//    public Page<Card> getAllCardsToUser(@RequestParam int page,
-//                                        @RequestParam int size,
-//                                        @RequestParam String sortBy,
-//                                        @RequestParam String direction){
-//        return serviceCard.getAllCardsToUser(page, size, sortBy, direction);
-//    }
+    @GetMapping("/page")
+    public Page<Card> getAllCardsToUser(@RequestParam int page,
+                                        @RequestParam int size,
+                                        @RequestParam String sortBy,
+                                        @RequestParam String direction) {
+        return service.getAllCardsToUser(page, size, sortBy, direction);
+    }
 
     @GetMapping("/user/card/all")
-    public List<String> getAll1(){
-        return TEST;
+    public ResponseEntity<List<Card>> getUserCard(Authentication authentication) {
+        return ResponseEntity.ok(service.getUserCard(authentication).stream().toList());
     }
 
-    @GetMapping("/adm/card/all")
-    public List<String> getAll2(){
-        return TEST;
+    @PostMapping("/block/card")
+    public ResponseEntity<?> getBlockCard(@RequestParam String numberCard,
+                                          Authentication authentication) {
+        service.getBlockCard(numberCard, authentication);
+        return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/card/{id}")
-    public String getCardById(@PathVariable Long id){
-        return TEST.stream().filter(e -> e.contains("" + id)).toString();
+    @PostMapping("/card/traffic")
+    public ResponseEntity<?> getTrafficCash(@RequestParam String numberOutput,
+                                            @RequestParam String numberInput,
+                                            @RequestParam Double sum) {
+        service.getTrafficCash(numberOutput, numberInput, sum);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/card/balance/{numberCard}")
+    public ResponseEntity<Double> getBalance(@PathVariable("numberCard") String numberCard){
+        return ResponseEntity.ok(service.getBalance(numberCard));
     }
 }
 

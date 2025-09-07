@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Set;
 
@@ -107,7 +108,7 @@ public class User {
             return this;
         }
 
-        public User build(){
+        public UserDetails build(){
             return new User(this);
         }
     }
